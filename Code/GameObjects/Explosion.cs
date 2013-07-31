@@ -27,7 +27,6 @@ namespace OSBO.GameObjects
             //texture for the explosion
             this.sprite = sprite;
 
-            soundBank.PlayCue("AsteroidExplosion");
             this.position = position;
             this.center = new Vector2(this.sprite.Width / 2, this.sprite.Height / 2);
 

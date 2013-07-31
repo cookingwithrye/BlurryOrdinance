@@ -49,11 +49,9 @@ namespace OSBO.GameObjects
             center = new Vector2(sprite.Width / 2, sprite.Height / 2);
             colours = TextureTo2DArray(sprite);
 
-            //load the texture
-            //base.LoadContent(contentManager, imageName);
         }
 
-        // create an asteroid smaller than the given one
+        // create an asteroid smaller than the given one ie debris from the first one exploding
         public Asteroid(Asteroid parent, ContentManager contentManager, Random N, SoundBank soundBank)
         {
             this.contentManager = contentManager;
@@ -67,6 +65,7 @@ namespace OSBO.GameObjects
 
             this.scale = parent.scale * 3 / N.Next(4, 6);
 
+            //apply the vector to the new position for the asteroid
             this.position = parent.position + new Vector2(N.Next(100)-50,N.Next(100)-50);
             this.velocity = new Vector2(N.Next(100) - 50, N.Next(100) - 50) + (N.Next(1, 2) - 2) * 0.3f * parent.velocity - (N.Next(1, 2) - 2) * 0.3f * parent.velocity;
 
@@ -75,27 +74,29 @@ namespace OSBO.GameObjects
             this.sprite = PreloadedTextures.preloadedTextures.ElementAt<Texture2D>(N.Next(3) + 1);
             center = new Vector2(sprite.Width / 2, sprite.Height / 2);
             colours = TextureTo2DArray(sprite);
-
-            //load the texture
-            //base.LoadContent(contentManager, imageName);
         }
 
+        /// <summary>
+        /// Destroy this asteroid. Depending on the size of the asteroid destroyed, a collection of smaller "debris" asteroids can be returned.
+        /// </summary>
+        /// <param name="contentManager"></param>
+        /// <returns></returns>
         public override List<GameObject> Destroy(ContentManager contentManager)
         {
             List<GameObject> temp = base.Destroy(contentManager);
             
+            //if the asteroid is at least 40% of a normal asteroid size, then spit out between 2 and 5 smaller asteroids
             if (this.scale > 0.4f)
             {
                 int j = N.Next(2,5);
-                //j = -1;
                 for (int i = 0; i < j; i++)
                     temp.Add(new Asteroid(this, contentManager, N, soundBank));    
             }
 
-            //AnimatedGameObject a = new AnimatedGameObject(0.2f, false, 4, new Rectangle(0, 0, 512, 512), 0.2f);
-            //temp.Add(a);
+            //add an explosion object at the previous location of this asteroid
             temp.Add(new Explosion(OSBO.GameObjects.PreloadedTextures.preloadedTextures.ElementAt<Texture2D>(0),position, scale, contentManager, soundBank));
 
+            //update the score the reflect the asteroid at the previous position
             OSBO.GameObjects.Score.Update();
             
             return temp;

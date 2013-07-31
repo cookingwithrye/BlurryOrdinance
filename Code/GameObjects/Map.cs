@@ -45,6 +45,11 @@ namespace OSBO.GameObjects
 
         #region Constructors
 
+        /// <summary>
+        /// Initialize the map, including resource loading
+        /// </summary>
+        /// <param name="theContentManager"></param>
+        /// <param name="imageName"></param>
         public Map(ContentManager theContentManager, String imageName)
         {
             // load the map texture
@@ -81,6 +86,10 @@ namespace OSBO.GameObjects
         
         #region Draw methods
 
+        /// <summary>
+        /// Draw the map
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
@@ -146,8 +155,10 @@ namespace OSBO.GameObjects
 
         #region ApplyBoundary - takes a GameObject and enforces the boundary rules on it
 
+        /// <summary>
         /// Takes in a GameObject and checks to see that it is within the map boundary. 
-        // If it's not, the position and velocity information for the GameObject is adjusted by reference
+        /// If it's not, the position and velocity information for the GameObject is adjusted by reference.
+        /// </summary>
         public void ApplyBoundary(GameObject theObject)
         {
             // don't aply the border if this object has already crossed one

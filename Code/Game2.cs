@@ -17,42 +17,63 @@ namespace OSBO
 {
     public class Game2 : Microsoft.Xna.Framework.Game
     {
+        #region Sound and Graphics asset content managers
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        //Sounds (Load Content, Update)
         AudioEngine audioEngine;
         SoundBank soundBank;
-        WaveBank waveBank;
 
-        //Score
+        #endregion
+
+        /// <summary>
+        /// Score
+        /// </summary>
         Score gameScore;
 
-        //map
+        /// <summary>
+        /// Game map rendered to the user
+        /// </summary>
         Map theMap;
 
-        //screen center
+        /// <summary>
+        /// Reference to the coordinates for the center of the screen. Used to draw relative positions of objects 
+        /// </summary>
         Vector2 screenCenter;
 
-        //Player ship
-        Ship player;
+        /// <summary>
+        /// Player ship
+        /// </summary>
+        private Ship player;
 
-        //other objects
-        List<GameObject> gameObjects;
+        /// <summary>
+        /// other objects that are part of the game
+        /// </summary>
+        private List<GameObject> gameObjects;
 
-        //draw the game relative to the player's ship?
-        bool drawRelative;
+        /// <summary>
+        /// draw the game relative to the player's ship?
+        /// </summary>
+        private bool drawRelative;
+         
+        /// <summary>
+        /// keep track of the game's state - either playing or showing the menu
+        /// </summary>
+        private bool showingMenu;
 
-        //keep track of the game's state - either playing or showing the menu
-        bool showingMenu;
-
-        //a menu object to show
+        /// <summary>
+        /// The menu to show
+        /// </summary>
         Menu theMenu;
 
+        /// <summary>
+        /// Store the previous button to avoid the keyboard buffer filling up when a key is held down
+        /// </summary>
         KeyboardState previousKeyState;
 
 
-        public Game2()
+                public Game2()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -78,8 +99,10 @@ namespace OSBO
             //Load player ship
             player.LoadContent(this.Content);
 
+            //the game begins with all previous game objects removed
             gameObjects.Clear();
-            //create some random asteroids
+            
+            //create some random asteroids, but disallow them from starting out in a collision with any other asteroid
             Random N = new Random();
             for (int i = 0; i < 10; i++)
             {
@@ -98,12 +121,15 @@ namespace OSBO
                     gameObjects.Add(temp);
             }
 
+            //collect list of asteroids to remove from the game
             List<GameObject> toRemove = new List<GameObject>();
+            
+            //iterate over each object in the game and determine which (if any) other objects are colliding with it
             foreach (GameObject a in gameObjects)
             {
                 foreach (GameObject b in gameObjects)
                 {
-                    if (a.CollisionWith(b, true))
+                    if (a.CollisionWith(b, precise:true))
                     {
                         toRemove.Add(a);
                         break;
@@ -111,6 +137,7 @@ namespace OSBO
                 }
             }
 
+            //no longer process objects in the game loop if they aren't present in the map anymore
             foreach (GameObject bad in toRemove)
             {
                 gameObjects.Remove(bad);
@@ -131,7 +158,10 @@ namespace OSBO
             //draw the game relative to the player
             drawRelative = true;
 
-            //graphics.ToggleFullScreen(); //uncomment this line to go fullscreen
+            theMap.mapBoundary.visible = false;
+
+            //graphics.ToggleFullScreen();
+
             if (!graphics.IsFullScreen)
             {
                 screenCenter = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
@@ -161,7 +191,6 @@ namespace OSBO
 
             audioEngine = new AudioEngine("Content//Audio//GameAudio.xgs");
             soundBank = new SoundBank(audioEngine, "Content//Audio//Sound Bank.xsb");
-            waveBank = new WaveBank(audioEngine, "Content//Audio//Wave Bank.xwb");
 
             //Create player ship
             player = new Ship(theMap.center);
@@ -256,7 +285,7 @@ namespace OSBO
             {
                 gameObjects.AddRange(player.Shoot(this.Content));
                 player.isFiring = false;
-                soundBank.PlayCue("FireLaser");
+                //soundBank.PlayCue("FireLaser");
             }
 
             //list of objects that have died and will be destroyed
@@ -359,7 +388,7 @@ namespace OSBO
                 // check for a collision between the ship and any of the game objects
                 if (player.alive && player.CollisionWith(gameObject,true) && gameObject.collisionBehaviour != CollisionBehaviours.None)
                 {
-                    //apply the collision
+                    //apply the collision behaviour
                     player.Collide(gameObject);
                 }
             }

@@ -16,29 +16,64 @@ using OSBO.GameObjects.Weapons;
 
 namespace OSBO.GameObjects
 {
-    /// a spaceship
+    /// <summary>
+    /// A user's spaceship object.
+    /// TODO: Decouple keyboard input from ship movement to allow this code to work in multiplayer over a network.
+    /// </summary>
     class Ship : GameObject
     {
         #region Constants & Variables
 
-        //rotation speed of the ship
+        /// <summary>
+        /// The rotation speed of the ship
+        /// </summary>
         public float ROTATION_SPEED;
 
-        //acceleration of the ship
+        /// <summary>
+        /// The acceleration of the ship
+        /// </summary>
         public float ACCELERATION_SPEED;
 
-        //maximum speed the ship is allowed to travel at
+        /// <summary>
+        /// Maximum speed that the ship is allowed to travel at
+        /// </summary>
         public float MAX_SPEED;
+
+        /// <summary>
+        /// Is the specified speed limit enforced upon the ship?
+        /// </summary>
         public bool ENFORCE_SPEED_LIMIT; //whether the speed limit is being enforced
 
-        //ship's firing rate, and timer that counts down to allow the ship to fire
+        /// <summary>
+        /// The maximum rate of fire for the ship (the repeat rate for the weapons being usable)
+        /// </summary>
         public float FIRE_RATE, firingCountdown;
 
-        public bool isFiring; //whether the ship is currently firing
-        public bool hasShieldsUp; //whether the ship has shields up
-        public float shieldsShowCountdown; //countdown until shields are hidden after a hit
-        public float SHIELDS_SHOW_SECONDS; //how long to show the shields for after a hit
-        public float SHIELDS_TOTAL_LIFESPAN; //how long your shields will last total
+        /// <summary>
+        /// Is the current state of the ship that it's firing? Required flag to prevent the buffer filling up with a bunch of fire instructions
+        /// </summary>
+        public bool isFiring;
+
+        /// <summary>
+        /// Does the ship currently have the shields up?
+        /// </summary>
+        public bool hasShieldsUp;
+        
+        /// <summary>
+        /// Delay before the shields aren't rendered after they become visible from a hit
+        /// </summary>
+        public float shieldsShowCountdown;
+
+        /// <summary>
+        /// The amount of time to show the shields when a collision takes place
+        /// </summary>
+        public float SHIELDS_SHOW_SECONDS;
+
+        /// <summary>
+        /// The amount of "health" or "power" that shields have before they disappear
+        /// </summary>
+        public float SHIELDS_TOTAL_LIFESPAN;
+
         public float shieldsRemainingTime; //how much shield power you have
         
         //Current and previous states of the keyboard
@@ -236,12 +271,16 @@ namespace OSBO.GameObjects
 
         #endregion
 
+        /// <summary>
+        /// Apply collision behaviour between this ship and the specified object
+        /// </summary>
+        /// <param name="otherObject"></param>
         public override void Collide(GameObject otherObject)
         {
             //don't let the ship be destroyed in a collision if there are shields
             if (shieldsRemainingTime > 0)
             {
-                shieldsShowCountdown = SHIELDS_SHOW_SECONDS; //show the shields up
+                shieldsShowCountdown = SHIELDS_SHOW_SECONDS; //show the shields up for the specified duration around the ship
                 this.collisionBehaviour = CollisionBehaviours.Bounce;
             }
             else

@@ -57,7 +57,7 @@ namespace OSBO
             //Create a new map
             theMap = new Map(this.Content, "Textures//starsLarge");
 
-            //graphics.ToggleFullScreen(); //uncomment this line to go fullscreen
+            graphics.ToggleFullScreen();
             if (!graphics.IsFullScreen)
             {
                 screenCenter = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);

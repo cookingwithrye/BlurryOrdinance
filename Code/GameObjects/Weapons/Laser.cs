@@ -14,11 +14,13 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace OSBO.GameObjects.Weapons
 {
-    /// a specific weapon
+    /// <summary>
+    /// Create a lazer weapon
+    /// </summary>
     class Laser : GameObject
     {
         #region Constructor
-
+        
         public Laser(Vector2 position, Vector2 center, float rotation, Vector2 initialVelocity, ContentManager contentManager)
         {
             // speed and size of the laser
@@ -36,7 +38,7 @@ namespace OSBO.GameObjects.Weapons
             this.position = position;
 
             //laser is aimed in the same direction as the ship that fired it
-            this.rotation = rotation; 
+            this.rotation = rotation;
             
             // calculate the velocity of the laser
             this.velocity = new Vector2(
@@ -44,7 +46,7 @@ namespace OSBO.GameObjects.Weapons
                     -(float)Math.Cos(this.rotation))
                     * speed + initialVelocity;
 
-            this.expires = true; //lasers only last 1.5 seconds
+            this.expires = true; //lasers disappear after a specified amount of gametime
             this.lifespan = 0.5f;
         }
 
@@ -52,10 +54,13 @@ namespace OSBO.GameObjects.Weapons
 
         #region Collision
 
-        /// overide the default GameObject collision to ignore collisions between lasers
+        /// <summary>
+        /// Override the default collision behaviour so that lazers pass through each other but other collision effects are still applied.
+        /// </summary>
+        /// <param name="otherObject"></param>
         public override void Collide(GameObject otherObject)
         {
-            // lasers don't collide with each other
+            // lasers don't collide with each other, but all other objects still have collision behaviour
             if (!(otherObject is Laser))
                 base.Collide(otherObject);
         }
