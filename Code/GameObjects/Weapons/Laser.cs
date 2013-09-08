@@ -46,7 +46,7 @@ namespace OSBO.GameObjects.Weapons
                     -(float)Math.Cos(this.rotation))
                     * speed + initialVelocity;
 
-            this.expires = true; //lasers disappear after a specified amount of gametime
+            this.expires = true; //by default all weapons expire after some timespan
             this.lifespan = 0.5f;
         }
 
@@ -63,8 +63,6 @@ namespace OSBO.GameObjects.Weapons
             // lasers don't collide with each other, but all other objects still have collision behaviour
             if (!(otherObject is Laser))
                 base.Collide(otherObject);
-
-
         }
 
         #endregion
@@ -89,4 +87,5 @@ namespace OSBO.GameObjects.Weapons
             
         }
     }
+
 }

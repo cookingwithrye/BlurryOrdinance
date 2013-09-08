@@ -27,7 +27,8 @@
     </XnaUpgrade>
     <XnaOutputType>Game</XnaOutputType>
     <XnaProfile>HiDef</XnaProfile>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -141,6 +142,7 @@
     <Compile Include="GameObjects\PreloadedTextures.cs" />
     <Compile Include="GameObjects\Score.cs" />
     <Compile Include="GameObjects\Ship.cs" />
+    <Compile Include="GameObjects\Weapons\HomingMissile.cs" />
     <Compile Include="GameObjects\Weapons\Laser.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,6 +202,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="OSBO_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

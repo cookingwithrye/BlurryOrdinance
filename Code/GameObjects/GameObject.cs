@@ -193,6 +193,17 @@ namespace OSBO.GameObjects
 
         #endregion
 
+        /// <summary>
+        /// Calculates the absolute distance from another game object in pixels
+        /// </summary>
+        /// <param name="other"></param>
+        public virtual float DistanceFrom(GameObject other) 
+        {
+            float temp1 = this.position.X - other.position.X;
+            float temp2 = this.position.Y - other.position.Y;
+            return (float)Math.Sqrt(Math.Pow(temp1,2) + Math.Pow(temp2,2));
+        }
+
         #region Destroy method
 
         /// destroys this GameObject and returns a list of GameObjects that take it's place
