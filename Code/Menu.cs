@@ -24,7 +24,7 @@ namespace OSBO
         KeyboardState previousKeyState;
         KeyboardState keyboardState;
 
-        Int32 keyboardCounter = 1;
+        int keyboardCounter = 1;
 
         #region "Selector"
 

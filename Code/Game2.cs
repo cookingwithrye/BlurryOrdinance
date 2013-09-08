@@ -160,7 +160,7 @@ namespace OSBO
 
             theMap.mapBoundary.visible = false;
 
-            //graphics.ToggleFullScreen();
+            graphics.ToggleFullScreen();
 
             if (!graphics.IsFullScreen)
             {
@@ -170,8 +170,8 @@ namespace OSBO
             if (graphics.IsFullScreen)
             {
                 //set the center of the screen based on the resolution
-                graphics.PreferredBackBufferWidth = 1280;
-                graphics.PreferredBackBufferHeight = 1024;
+                graphics.PreferredBackBufferWidth = 1366;//1280;
+                graphics.PreferredBackBufferHeight = 768;//1024;
                 graphics.ApplyChanges();
 
                 //set screen center

@@ -15,13 +15,13 @@ using Microsoft.Xna.Framework.Storage;
 namespace OSBO.GameObjects.Weapons
 {
     /// <summary>
-    /// Create a lazer weapon
+    /// Generic weapon capabilities
     /// </summary>
-    class Laser : GameObject
+    public class Weapon : GameObject
     {
         #region Constructor
         
-        public Laser(Vector2 position, Vector2 center, float rotation, Vector2 initialVelocity, ContentManager contentManager)
+        public Weapon(Vector2 position, Vector2 center, float rotation, Vector2 initialVelocity, ContentManager contentManager)
         {
             // speed and size of the laser
             scale = 1.0f;
@@ -63,9 +63,30 @@ namespace OSBO.GameObjects.Weapons
             // lasers don't collide with each other, but all other objects still have collision behaviour
             if (!(otherObject is Laser))
                 base.Collide(otherObject);
+
+
         }
 
         #endregion
+    }
 
+    /// <summary>
+    /// Create a lazer weapon
+    /// </summary>
+    public class Laser : Weapon
+    {
+        /// <summary>
+        /// Construct a basic lazer weapon
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="center"></param>
+        /// <param name="rotation"></param>
+        /// <param name="initialVelocity"></param>
+        /// <param name="contentManager"></param>
+        public void Weapon(Vector2 position, Vector2 center, float rotation, Vector2 initialVelocity, ContentManager contentManager) 
+            : base(position, center, rotation, initialVelocity, contentManager)
+        {
+            
+        }
     }
 }
